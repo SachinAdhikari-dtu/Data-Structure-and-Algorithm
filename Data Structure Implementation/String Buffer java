@@ -1,0 +1,65 @@
+
+/*  
+
+you do not have to insert utility package as StringBuffer was in lang package 
+
+
+*/
+
+/* 
+
+Why to use String Buffer Over String Builder
+1) slow then STring builder
+2) Thread safe 
+3) More EFFICIENT 
+4) Mutable
+
+
+*/
+
+
+public class stringBuffer {
+   
+    
+
+    public static void main(String[] args) {
+  
+        StringBuffer sb = new StringBuffer("sachin");
+
+        // Append
+        sb.append(" adhikari");
+        System.out.println("After append: " + sb);
+
+        // Insert
+        sb.insert(0, "Hello ");
+        System.out.println("After insert: " + sb);
+
+        // Replace
+        sb.replace(0, 5, "Hi");
+        System.out.println("After replace: " + sb);
+
+        // Delete
+        sb.delete(3, 11); // deletes characters from index 3 to 10
+        System.out.println("After delete: " + sb);
+
+        // Reverse
+        sb.reverse();
+        System.out.println("After reverse: " + sb);
+
+        // Capacity and Length
+        System.out.println("Capacity: " + sb.capacity());
+        System.out.println("Length: " + sb.length());
+
+        // Compare with StringBuilder
+        StringBuilder sb2 = new StringBuilder("sachin");
+        sb2.reverse();
+        System.out.println("StringBuilder reverse: " + sb2);
+    
+
+        
+       
+
+    }
+
+   
+}
