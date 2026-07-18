@@ -1,0 +1,115 @@
+public class SelfBalancingTree {
+
+
+
+    // Node class
+    public static class Node {
+        int data;
+        Node right;
+        Node left;
+        int height;
+        Node(int data) {
+            this.data = data;
+            this.height = 1; // initialize height
+        }
+    }
+
+    private static Node root;
+
+    // helper to avoid null pointer
+    private static int getHeight(Node node) {
+        return (node == null) ? 0 : node.height;
+    }
+
+    // to insert a value
+    public static Node insertValue(int data, Node root) {
+        if (root == null) {
+            Node temp = new Node(data);
+            return temp;
+        }
+        if (data < root.data) {
+            root.left = insertValue(data, root.left);
+        } else {
+            root.right = insertValue(data, root.right);
+        }
+
+        // ✅ fixed height update with null safety
+        root.height = Math.max(getHeight(root.left), getHeight(root.right)) + 1;
+
+        return rotate(root);
+    }
+
+    public static Node rotate(Node root) {
+        if (root == null) return null;
+
+        // left heavy
+        if (getHeight(root.left) - getHeight(root.right) > 1) {
+            if (getHeight(root.left.left) >= getHeight(root.left.right)) {
+                // left-left case
+                return rightRotate(root);
+            } else {
+                // left-right case
+                root.left = leftRotate(root.left);
+                return rightRotate(root);
+            }
+        }
+
+        // right heavy
+        if (getHeight(root.right) - getHeight(root.left) > 1) {
+            if (getHeight(root.right.right) >= getHeight(root.right.left)) {
+                // right-right case
+                return leftRotate(root);
+            } else {
+                // right-left case
+                root.right = rightRotate(root.right);
+                return leftRotate(root);
+            }
+        }
+        return root;
+    }
+
+    public static Node leftRotate(Node root) {
+        Node c = root.right;
+        Node t = c.left;
+
+        c.left = root;
+        root.right = t;
+
+        //fixed height updates
+        root.height = Math.max(getHeight(root.left), getHeight(root.right)) + 1;
+        c.height = Math.max(getHeight(c.left), getHeight(c.right)) + 1;
+
+        return c;
+    }
+
+    public static Node rightRotate(Node root) {
+        Node c = root.left;
+        Node t = c.right;
+
+        c.right = root;
+        root.left = t;
+
+        // ✅ fixed height updates
+        root.height = Math.max(getHeight(root.left), getHeight(root.right)) + 1;
+        c.height = Math.max(getHeight(c.left), getHeight(c.right)) + 1;
+
+        return c;
+    }
+
+    // to print using preorder traversal
+    public static void preOreder(Node root) {
+        if (root == null) return;
+        System.out.print(root.data + "  ");
+        preOreder(root.left);
+        preOreder(root.right);
+    }
+
+    public static void main(String[] args) {
+        for (int i = 0; i < 1000; i++) {
+            root = insertValue(i, root); 
+        }
+
+        System.out.println(root.height);
+    }
+
+    }
